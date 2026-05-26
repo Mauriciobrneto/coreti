@@ -1,0 +1,241 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+
+    <div>
+        <h2 class="fw-bold mb-1">Chamados</h2>
+        <p class="text-muted mb-0">Acompanhe e gerencie os chamados de suporte.</p>
+    </div>
+
+    <a href="/chamados/novo" class="btn btn-primary">
+        <i class="bi bi-plus-circle"></i>
+        Novo Chamado
+    </a>
+
+</div>
+
+<div class="card shadow-sm border-0 mb-4">
+
+    <div class="card-body">
+
+        <form method="GET" class="row g-3">
+
+            <div class="col-md-4">
+                <input type="text"
+                       name="busca"
+                       class="form-control"
+                       placeholder="Buscar chamado..."
+                       value="{{ request.args.get('busca', '') }}">
+            </div>
+
+            <div class="col-md-3">
+                <select name="status" class="form-select">
+
+                    <option value="">
+                        Todos Status
+                    </option>
+
+                    <option value="Aberto"
+                    {% if request.args.get('status') == 'Aberto' %}selected{% endif %}>
+                        Aberto
+                    </option>
+
+                    <option value="Em andamento"
+                    {% if request.args.get('status') == 'Em andamento' %}selected{% endif %}>
+                        Em andamento
+                    </option>
+
+                    <option value="Finalizado"
+                    {% if request.args.get('status') == 'Finalizado' %}selected{% endif %}>
+                        Finalizado
+                    </option>
+
+                </select>
+            </div>
+
+            <div class="col-md-3">
+                <input type="text"
+                       name="tecnico"
+                       class="form-control"
+                       placeholder="Técnico..."
+                       value="{{ request.args.get('tecnico', '') }}">
+            </div>
+
+            <div class="col-md-2">
+                <button class="btn btn-primary w-100">
+                    <i class="bi bi-search"></i>
+                    Filtrar
+                </button>
+            </div>
+
+        </form>
+
+    </div>
+
+</div>
+
+<div class="card shadow-sm border-0">
+
+    <div class="card-body">
+
+        <div class="table-responsive">
+
+            <table class="table table-hover align-middle">
+
+                <thead class="table-light">
+
+                    <tr>
+                        <th>ID</th>
+                        <th>Título</th>
+                        <th>Solicitante</th>
+                        <th>Técnico</th>
+                        <th>Prioridade</th>
+                        <th>Status</th>
+                        <th>Equipamento</th>
+                        <th>Data</th>
+                        <th class="text-end">Ações</th>
+                    </tr>
+
+                </thead>
+
+                <tbody>
+
+                    {% for chamado in chamados %}
+
+                    <tr>
+
+                        <td class="fw-semibold">
+                            #{{ chamado.id }}
+                        </td>
+
+                        <td>
+                            <a href="/chamados/{{ chamado.id }}"
+                               class="fw-semibold text-decoration-none">
+                                {{ chamado.titulo }}
+                            </a>
+                        </td>
+
+                        <td>
+                            <i class="bi bi-person text-muted"></i>
+                            {{ chamado.solicitante }}
+                        </td>
+
+                        <td>
+                            {{ chamado.tecnico_responsavel or 'Não definido' }}
+                        </td>
+
+                        <td>
+
+                            {% if chamado.prioridade == 'Alta' %}
+
+                                <span class="badge bg-danger">
+                                    <i class="bi bi-flag-fill"></i>
+                                    Alta
+                                </span>
+
+                            {% elif chamado.prioridade == 'Normal' %}
+
+                                <span class="badge bg-primary">
+                                    <i class="bi bi-flag-fill"></i>
+                                    Normal
+                                </span>
+
+                            {% else %}
+
+                                <span class="badge bg-secondary">
+                                    <i class="bi bi-flag-fill"></i>
+                                    Baixa
+                                </span>
+
+                            {% endif %}
+
+                        </td>
+
+                        <td>
+
+                            {% if chamado.status == 'Aberto' %}
+
+                                <span class="badge bg-danger">
+                                    <i class="bi bi-exclamation-circle"></i>
+                                    Aberto
+                                </span>
+
+                            {% elif chamado.status == 'Em andamento' %}
+
+                                <span class="badge bg-warning text-dark">
+                                    <i class="bi bi-clock"></i>
+                                    Em andamento
+                                </span>
+
+                            {% else %}
+
+                                <span class="badge bg-success">
+                                    <i class="bi bi-check-circle"></i>
+                                    Finalizado
+                                </span>
+
+                            {% endif %}
+
+                        </td>
+
+                        <td>
+                            {% if chamado.equipamento %}
+                                {{ chamado.equipamento.nome }}
+                            {% else %}
+                                <span class="text-muted">Sem equipamento</span>
+                            {% endif %}
+                        </td>
+
+                        <td>
+                            {{ chamado.data_abertura.strftime('%d/%m/%Y') }}
+                        </td>
+
+                        <td class="text-end">
+
+                            <div class="btn-group">
+
+                                <a href="/chamados/{{ chamado.id }}"
+                                   class="btn btn-sm btn-outline-primary">
+                                    <i class="bi bi-eye"></i>
+                                </a>
+
+                                <a href="/chamados/{{ chamado.id }}/editar"
+                                   class="btn btn-sm btn-outline-warning">
+                                    <i class="bi bi-pencil-square"></i>
+                                </a>
+
+                                <a href="/chamados/{{ chamado.id }}/excluir"
+                                   class="btn btn-sm btn-outline-danger"
+                                   onclick="return confirm('Deseja excluir este chamado?')">
+                                    <i class="bi bi-trash"></i>
+                                </a>
+
+                            </div>
+
+                        </td>
+
+                    </tr>
+
+                    {% else %}
+
+                    <tr>
+                        <td colspan="9" class="text-center text-muted py-4">
+                            Nenhum chamado encontrado.
+                        </td>
+                    </tr>
+
+                    {% endfor %}
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}

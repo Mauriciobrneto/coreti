@@ -1,0 +1,257 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+
+    <div>
+        <h2 class="fw-bold mb-1">Equipamentos</h2>
+        <p class="text-muted mb-0">Gerencie o inventário e patrimônio de TI.</p>
+    </div>
+
+    <a href="/equipamentos/novo" class="btn btn-primary">
+        <i class="bi bi-plus-circle"></i>
+        Novo Equipamento
+    </a>
+
+</div>
+
+<div class="card shadow-sm border-0 mb-4">
+
+    <div class="card-body">
+
+        <form method="GET" class="row g-3">
+
+            <div class="col-md-6">
+                <input type="text"
+                       name="busca"
+                       class="form-control"
+                       placeholder="Buscar equipamento..."
+                       value="{{ request.args.get('busca', '') }}">
+            </div>
+
+            <div class="col-md-4">
+                <select name="status" class="form-select">
+
+                    <option value="">
+                        Todos os status
+                    </option>
+
+                    <option value="Ativo"
+                    {% if request.args.get('status') == 'Ativo' %}selected{% endif %}>
+                        Ativo
+                    </option>
+
+                    <option value="Manutenção"
+                    {% if request.args.get('status') == 'Manutenção' %}selected{% endif %}>
+                        Manutenção
+                    </option>
+
+                    <option value="Baixado"
+                    {% if request.args.get('status') == 'Baixado' %}selected{% endif %}>
+                        Baixado
+                    </option>
+
+                </select>
+            </div>
+
+            <div class="col-md-2">
+                <button class="btn btn-primary w-100">
+                    <i class="bi bi-search"></i>
+                    Filtrar
+                </button>
+            </div>
+
+        </form>
+
+    </div>
+
+</div>
+
+<div class="card shadow-sm border-0">
+
+    <div class="card-body">
+
+        <div class="table-responsive">
+
+            <table class="table table-hover align-middle">
+
+                <thead class="table-light">
+
+                    <tr>
+                        <th>Imagem</th>
+                        <th>ID</th>
+                        <th>Patrimônio</th>
+                        <th>Nome</th>
+                        <th>Tipo</th>
+                        <th>Status</th>
+                        <th class="text-end">Ações</th>
+                    </tr>
+
+                </thead>
+
+                <tbody>
+
+                    {% for equipamento in equipamentos.items %}
+
+                    <tr>
+
+                        <td>
+
+                            {% if equipamento.imagem %}
+
+                                <img src="{{ url_for('static',
+                                                     filename='uploads/' + equipamento.imagem) }}"
+                                     class="rounded border bg-white"
+                                     style="width: 64px; height: 64px; object-fit: contain;">
+
+                            {% else %}
+
+                                <div class="bg-light border rounded d-flex align-items-center justify-content-center text-muted small"
+                                     style="width: 64px; height: 64px;">
+                                    Sem imagem
+                                </div>
+
+                            {% endif %}
+
+                        </td>
+
+                        <td class="fw-semibold">
+                            #{{ equipamento.id }}
+                        </td>
+
+                        <td>
+                            <span class="badge bg-light text-dark border">
+                                {{ equipamento.patrimonio }}
+                            </span>
+                        </td>
+
+                        <td>
+                            <a href="/equipamentos/{{ equipamento.id }}"
+                               class="fw-semibold text-decoration-none">
+                                {{ equipamento.nome }}
+                            </a>
+                        </td>
+
+                        <td>{{ equipamento.tipo }}</td>
+
+                        <td>
+
+                            {% if equipamento.status == 'Ativo' %}
+
+                                <span class="badge bg-success">
+                                    <i class="bi bi-check-circle"></i>
+                                    Ativo
+                                </span>
+
+                            {% elif equipamento.status == 'Manutenção' %}
+
+                                <span class="badge bg-warning text-dark">
+                                    <i class="bi bi-tools"></i>
+                                    Manutenção
+                                </span>
+
+                            {% elif equipamento.status == 'Baixado' %}
+
+                                <span class="badge bg-secondary">
+                                    <i class="bi bi-archive"></i>
+                                    Baixado
+                                </span>
+
+                            {% else %}
+
+                                <span class="badge bg-primary">
+                                    {{ equipamento.status }}
+                                </span>
+
+                            {% endif %}
+
+                        </td>
+
+                        <td class="text-end">
+
+                            <div class="btn-group">
+
+                                <a href="/equipamentos/{{ equipamento.id }}"
+                                   class="btn btn-sm btn-outline-primary">
+                                    <i class="bi bi-eye"></i>
+                                </a>
+
+                                <a href="/equipamentos/{{ equipamento.id }}/editar"
+                                   class="btn btn-sm btn-outline-warning">
+                                    <i class="bi bi-pencil-square"></i>
+                                </a>
+
+                                <a href="/equipamentos/{{ equipamento.id }}/excluir"
+                                   class="btn btn-sm btn-outline-danger"
+                                   onclick="return confirm('Tem certeza que deseja excluir este equipamento?')">
+                                    <i class="bi bi-trash"></i>
+                                </a>
+
+                            </div>
+
+                        </td>
+
+                    </tr>
+
+                    {% else %}
+
+                    <tr>
+                        <td colspan="7" class="text-center text-muted py-4">
+                            Nenhum equipamento encontrado.
+                        </td>
+                    </tr>
+
+                    {% endfor %}
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+        <nav class="mt-3">
+
+            <ul class="pagination mb-0">
+
+                {% if equipamentos.has_prev %}
+
+                <li class="page-item">
+
+                    <a class="page-link"
+                       href="{{ url_for('main.equipamentos',
+                                        page=equipamentos.prev_num,
+                                        busca=request.args.get('busca', ''),
+                                        status=request.args.get('status', '')) }}">
+                        Anterior
+                    </a>
+
+                </li>
+
+                {% endif %}
+
+                {% if equipamentos.has_next %}
+
+                <li class="page-item">
+
+                    <a class="page-link"
+                       href="{{ url_for('main.equipamentos',
+                                        page=equipamentos.next_num,
+                                        busca=request.args.get('busca', ''),
+                                        status=request.args.get('status', '')) }}">
+                        Próxima
+                    </a>
+
+                </li>
+
+                {% endif %}
+
+            </ul>
+
+        </nav>
+
+    </div>
+
+</div>
+
+{% endblock %}

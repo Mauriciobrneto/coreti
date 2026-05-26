@@ -1,0 +1,103 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<div class="row justify-content-center align-items-center" style="min-height: 70vh;">
+
+    <div class="col-md-5 col-lg-4">
+
+        <div class="text-center mb-4">
+
+            <div class="bg-dark text-white rounded-circle d-inline-flex align-items-center justify-content-center mb-3"
+                 style="width: 70px; height: 70px;">
+
+                <i class="bi bi-cpu" style="font-size: 2rem;"></i>
+
+            </div>
+
+            <h2 class="fw-bold mb-1">
+                CoreTI
+            </h2>
+
+            <p class="text-muted mb-0">
+                Sistema de Gestão de TI
+            </p>
+
+        </div>
+
+        <div class="card shadow-sm border-0">
+
+            <div class="card-body p-4">
+
+                <h5 class="fw-semibold mb-4">
+                    Acessar sistema
+                </h5>
+
+                <form method="POST">
+
+                    <div class="mb-3">
+
+                        <label class="form-label">
+                            Usuário
+                        </label>
+
+                        <div class="input-group">
+
+                            <span class="input-group-text">
+                                <i class="bi bi-person"></i>
+                            </span>
+
+                            <input type="text"
+                                   name="username"
+                                   class="form-control"
+                                   placeholder="Digite seu usuário"
+                                   required>
+
+                        </div>
+
+                    </div>
+
+                    <div class="mb-4">
+
+                        <label class="form-label">
+                            Senha
+                        </label>
+
+                        <div class="input-group">
+
+                            <span class="input-group-text">
+                                <i class="bi bi-lock"></i>
+                            </span>
+
+                            <input type="password"
+                                   name="password"
+                                   class="form-control"
+                                   placeholder="Digite sua senha"
+                                   required>
+
+                        </div>
+
+                    </div>
+
+                    <button class="btn btn-primary w-100">
+
+                        <i class="bi bi-box-arrow-in-right"></i>
+                        Entrar
+
+                    </button>
+
+                </form>
+
+            </div>
+
+        </div>
+
+        <p class="text-center text-muted small mt-4">
+            CoreTI v1.0
+        </p>
+
+    </div>
+
+</div>
+
+{% endblock %}

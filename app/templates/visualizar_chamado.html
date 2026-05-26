@@ -1,0 +1,261 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<div class="d-flex align-items-center mb-4">
+    <a href="/chamados" class="btn btn-light border me-3">
+        <i class="bi bi-arrow-left"></i>
+    </a>
+
+    <h2 class="mb-0">
+        Chamado #{{ chamado.id }} - {{ chamado.titulo }}
+    </h2>
+</div>
+
+<div class="row">
+
+    <div class="col-md-9">
+
+        <div class="card shadow-sm border-0 mb-4">
+            <div class="card-body">
+
+                <div class="row text-center text-md-start">
+
+                    <div class="col-md-3 border-end">
+                        <strong>Status</strong><br>
+
+                        {% if chamado.status == 'Aberto' %}
+                            <span class="badge bg-warning text-dark mt-2 p-2">
+                                <i class="bi bi-exclamation-circle"></i> Aberto
+                            </span>
+                        {% elif chamado.status == 'Em andamento' %}
+                            <span class="badge bg-primary mt-2 p-2">
+                                <i class="bi bi-clock"></i> Em andamento
+                            </span>
+                        {% else %}
+                            <span class="badge bg-success mt-2 p-2">
+                                <i class="bi bi-check-circle"></i> Finalizado
+                            </span>
+                        {% endif %}
+                    </div>
+
+                    <div class="col-md-3 border-end">
+                        <strong>Prioridade</strong><br>
+
+                        {% if chamado.prioridade == 'Alta' %}
+                            <span class="badge bg-danger mt-2 p-2">
+                                <i class="bi bi-flag-fill"></i> Alta
+                            </span>
+                        {% elif chamado.prioridade == 'Normal' %}
+                            <span class="badge bg-primary mt-2 p-2">
+                                <i class="bi bi-flag-fill"></i> Normal
+                            </span>
+                        {% else %}
+                            <span class="badge bg-secondary mt-2 p-2">
+                                <i class="bi bi-flag-fill"></i> Baixa
+                            </span>
+                        {% endif %}
+                    </div>
+
+                    <div class="col-md-3 border-end">
+                        <strong>Solicitante</strong><br>
+                        <span class="mt-2 d-inline-block">
+                            <i class="bi bi-person"></i>
+                            {{ chamado.solicitante }}
+                        </span>
+                    </div>
+
+                    <div class="col-md-3">
+                        <strong>Equipamento</strong><br>
+                        <a href="/equipamentos/{{ chamado.equipamento.id }}"
+                           class="mt-2 d-inline-block text-decoration-none">
+                            <i class="bi bi-pc-display"></i>
+                            {{ chamado.equipamento.nome }}
+                        </a>
+                    </div>
+
+                </div>
+
+            </div>
+        </div>
+
+        <div class="card shadow-sm border-0 mb-4">
+            <div class="card-body">
+
+                <h5 class="mb-3">
+                    <i class="bi bi-file-text"></i>
+                    Descrição
+                </h5>
+
+                <div class="border rounded p-3 bg-light">
+                    {{ chamado.descricao }}
+                </div>
+
+            </div>
+        </div>
+
+        <div class="card shadow-sm border-0 mb-4">
+            <div class="card-body">
+
+                <h5 class="mb-4">
+                    <i class="bi bi-chat-dots"></i>
+                    Comentários
+                    <span class="badge bg-primary">
+                        {{ chamado.comentarios|length }}
+                    </span>
+                </h5>
+
+                {% for comentario in chamado.comentarios %}
+
+                <div class="border rounded p-3 mb-3">
+
+                    <strong class="text-primary">
+                        Sistema
+                    </strong>
+
+                    <small class="text-muted ms-2">
+                        {{ comentario.data.strftime('%d/%m/%Y %H:%M') }}
+                    </small>
+
+                    <p class="mt-2 mb-0">
+                        {{ comentario.comentario }}
+                    </p>
+
+                </div>
+
+                {% endfor %}
+
+                <hr>
+
+                <h5 class="mb-3">
+                    <i class="bi bi-pencil"></i>
+                    Adicionar Comentário
+                </h5>
+
+                <hr>
+
+                    <h5 class="mb-3">
+                        <i class="bi bi-paperclip"></i>
+                        Anexos
+                    </h5>
+
+                    <div class="mb-4">
+
+                        {% for anexo in chamado.anexos %}
+
+                            <div class="mb-2">
+
+                                <a href="{{ url_for('static',
+                                                    filename='uploads/chamados/' + anexo.arquivo) }}"
+                                target="_blank">
+
+                                    {{ anexo.arquivo }}
+
+                                </a>
+
+                            </div>
+
+                        {% endfor %}
+
+                    </div>
+
+                    <form method="POST"
+                        action="/chamados/{{ chamado.id }}/anexo"
+                        enctype="multipart/form-data">
+
+                        <div class="mb-3">
+
+                            <input type="file"
+                                name="arquivo"
+                                class="form-control">
+
+                        </div>
+
+                        <button class="btn btn-secondary">
+
+                            <i class="bi bi-upload"></i>
+
+                            Enviar Anexo
+
+                        </button>
+
+                    </form>
+
+                <form method="POST"
+                      action="/chamados/{{ chamado.id }}/comentario">
+
+                    <div class="mb-3">
+                        <textarea name="comentario"
+                                  class="form-control"
+                                  rows="4"
+                                  placeholder="Digite seu comentário aqui..."></textarea>
+                    </div>
+
+                    <button class="btn btn-primary">
+                        <i class="bi bi-send"></i>
+                        Adicionar Comentário
+                    </button>
+
+                </form>
+
+            </div>
+        </div>
+
+    </div>
+
+    <div class="col-md-3">
+
+        <div class="card shadow-sm border-0 mb-4">
+            <div class="card-body">
+
+                <h5 class="mb-3">Ações</h5>
+
+                <a href="/chamados/{{ chamado.id }}/editar"
+                   class="btn btn-warning w-100">
+                    <i class="bi bi-pencil-square"></i>
+                    Editar Chamado
+                </a>
+
+                {% if current_user.tipo in ['admin', 'tecnico'] and not chamado.tecnico_responsavel %}
+
+                <a href="/chamados/{{ chamado.id }}/assumir"
+                class="btn btn-primary w-100 mb-2">
+
+                    <i class="bi bi-person-check"></i>
+                    Assumir Chamado
+
+                </a>
+
+                {% endif %}
+
+            </div>
+        </div>
+
+        <div class="card shadow-sm border-0">
+            <div class="card-body">
+
+                <h5 class="mb-3">Informações</h5>
+
+                <p>
+                    <strong>ID do Chamado</strong><br>
+                    {{ chamado.id }}
+                </p>
+
+                <p>
+                    <strong>Criado em</strong><br>
+                    {{ chamado.data_abertura.strftime('%d/%m/%Y %H:%M') }}
+                </p>
+
+                <p>
+                    <strong>Técnico Responsável</strong><br>
+                    {{ chamado.tecnico_responsavel or 'Não definido' }}
+                </p>
+
+            </div>
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}

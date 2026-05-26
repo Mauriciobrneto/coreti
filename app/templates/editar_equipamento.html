@@ -1,0 +1,337 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+
+    <div>
+
+        <a href="/equipamentos/{{ equipamento.id }}"
+           class="btn btn-light border mb-3">
+
+            <i class="bi bi-arrow-left"></i>
+            Voltar
+
+        </a>
+
+        <h2 class="fw-bold mb-1">
+            Editar Equipamento
+        </h2>
+
+        <p class="text-muted mb-0">
+            Atualize as informações do equipamento.
+        </p>
+
+    </div>
+
+</div>
+
+<form method="POST" enctype="multipart/form-data">
+
+    <div class="row">
+
+        <div class="col-md-8">
+
+            <div class="card shadow-sm border-0 mb-4">
+
+                <div class="card-body">
+
+                    <h5 class="fw-semibold mb-4">
+
+                        <i class="bi bi-info-circle"></i>
+                        Informações Principais
+
+                    </h5>
+
+                    <div class="row">
+
+                        <div class="col-md-4 mb-3">
+
+                            <label class="form-label">
+                                Patrimônio
+                            </label>
+
+                            <input type="text"
+                                   name="patrimonio"
+                                   class="form-control"
+                                   value="{{ equipamento.patrimonio }}"
+                                   readonly>
+
+                        </div>
+
+                        <div class="col-md-8 mb-3">
+
+                            <label class="form-label">
+                                Nome
+                            </label>
+
+                            <input type="text"
+                                   name="nome"
+                                   class="form-control"
+                                   value="{{ equipamento.nome }}">
+
+                        </div>
+
+                        <div class="col-md-6 mb-3">
+
+                            <label class="form-label">
+                                Tipo
+                            </label>
+
+                            <input type="text"
+                                   name="tipo"
+                                   class="form-control"
+                                   value="{{ equipamento.tipo }}">
+
+                        </div>
+
+                        <div class="col-md-6 mb-3">
+
+                            <label class="form-label">
+                                Status
+                            </label>
+
+                            <select name="status"
+                                    class="form-select">
+
+                                <option value="Ativo"
+                                {% if equipamento.status == 'Ativo' %}
+                                selected
+                                {% endif %}>
+                                    Ativo
+                                </option>
+
+                                <option value="Manutenção"
+                                {% if equipamento.status == 'Manutenção' %}
+                                selected
+                                {% endif %}>
+                                    Manutenção
+                                </option>
+
+                                <option value="Baixado"
+                                {% if equipamento.status == 'Baixado' %}
+                                selected
+                                {% endif %}>
+                                    Baixado
+                                </option>
+
+                            </select>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+            <div class="card shadow-sm border-0 mb-4">
+
+                <div class="card-body">
+
+                    <h5 class="fw-semibold mb-4">
+
+                        <i class="bi bi-cpu"></i>
+                        Dados Técnicos
+
+                    </h5>
+
+                    <div class="row">
+
+                        <div class="col-md-6 mb-3">
+
+                            <label class="form-label">
+                                Marca
+                            </label>
+
+                            <input type="text"
+                                   name="marca"
+                                   class="form-control"
+                                   value="{{ equipamento.marca }}">
+
+                        </div>
+
+                        <div class="col-md-6 mb-3">
+
+                            <label class="form-label">
+                                Modelo
+                            </label>
+
+                            <input type="text"
+                                   name="modelo"
+                                   class="form-control"
+                                   value="{{ equipamento.modelo }}">
+
+                        </div>
+
+                        <div class="col-md-6 mb-3">
+
+                            <label class="form-label">
+                                Número de Série
+                            </label>
+
+                            <input type="text"
+                                   name="numero_serie"
+                                   class="form-control"
+                                   value="{{ equipamento.numero_serie }}">
+
+                        </div>
+
+                        <div class="col-md-6 mb-3">
+
+                            <label class="form-label">
+                                IP
+                            </label>
+
+                            <input type="text"
+                                   name="ip"
+                                   class="form-control"
+                                   value="{{ equipamento.ip }}">
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+            <div class="card shadow-sm border-0 mb-4">
+
+                <div class="card-body">
+
+                    <h5 class="fw-semibold mb-4">
+
+                        <i class="bi bi-person-badge"></i>
+                        Responsabilidade
+
+                    </h5>
+
+                    <div class="row">
+
+                        <div class="col-md-6 mb-3">
+
+                            <label class="form-label">
+                                Usuário Responsável
+                            </label>
+
+                            <input type="text"
+                                   name="usuario_responsavel"
+                                   class="form-control"
+                                   value="{{ equipamento.usuario_responsavel }}">
+
+                        </div>
+
+                        <div class="col-md-6 mb-3">
+
+                            <label class="form-label">
+                                Setor
+                            </label>
+
+                            <input type="text"
+                                   name="setor"
+                                   class="form-control"
+                                   value="{{ equipamento.setor }}">
+
+                        </div>
+
+                        <div class="col-12 mb-3">
+
+                            <label class="form-label">
+                                Observações
+                            </label>
+
+                            <textarea name="observacoes"
+                                      class="form-control"
+                                      rows="4">{{ equipamento.observacoes }}</textarea>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="col-md-4">
+
+            <div class="card shadow-sm border-0 mb-4">
+
+                <div class="card-body text-center">
+
+                    <h5 class="fw-semibold mb-4">
+
+                        <i class="bi bi-image"></i>
+                        Imagem Atual
+
+                    </h5>
+
+                    {% if equipamento.imagem %}
+
+                        <img src="{{ url_for('static',
+                                             filename='uploads/' + equipamento.imagem) }}"
+                             class="img-fluid rounded border bg-white mb-3"
+                             style="max-height: 280px; object-fit: contain;">
+
+                    {% else %}
+
+                        <div class="border rounded p-5 text-muted bg-light mb-3">
+
+                            <i class="bi bi-image"
+                               style="font-size: 3rem;"></i>
+
+                            <p class="mb-0 mt-2">
+                                Sem imagem
+                            </p>
+
+                        </div>
+
+                    {% endif %}
+
+                    <input type="file"
+                           name="imagem"
+                           class="form-control">
+
+                    <small class="text-muted d-block mt-2">
+                        Envie uma nova imagem para substituir a atual.
+                    </small>
+
+                </div>
+
+            </div>
+
+            <div class="card shadow-sm border-0">
+
+                <div class="card-body">
+
+                    <h5 class="fw-semibold mb-3">
+                        Ações
+                    </h5>
+
+                    <button class="btn btn-success w-100 mb-2">
+
+                        <i class="bi bi-check-circle"></i>
+                        Salvar Alterações
+
+                    </button>
+
+                    <a href="/equipamentos/{{ equipamento.id }}"
+                       class="btn btn-light border w-100">
+
+                        Cancelar
+
+                    </a>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</form>
+
+{% endblock %}

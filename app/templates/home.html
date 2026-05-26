@@ -1,0 +1,390 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<h2 class="mb-4 fw-bold">
+    Dashboard
+</h2>
+
+{% if not modo_usuario %}
+
+<div class="row mb-4">
+
+    <div class="col-md-6">
+
+        <div class="card shadow-sm border-0 h-100">
+
+            <div class="card-body d-flex justify-content-between align-items-center">
+
+                <div>
+
+                    <h6 class="text-muted mb-2">
+                        Total de Equipamentos
+                    </h6>
+
+                    <h2 class="fw-bold text-primary">
+                        {{ total_equipamentos }}
+                    </h2>
+
+                </div>
+
+                <i class="bi bi-pc-display text-primary"
+                   style="font-size: 3rem;">
+                </i>
+
+            </div>
+
+            <div class="border-bottom border-4 border-primary rounded-bottom">
+            </div>
+
+        </div>
+
+    </div>
+
+    <div class="col-md-6">
+
+        <div class="card shadow-sm border-0 h-100">
+
+            <div class="card-body d-flex justify-content-between align-items-center">
+
+                <div>
+
+                    <h6 class="text-muted mb-2">
+                        Equipamentos Ativos
+                    </h6>
+
+                    <h2 class="fw-bold text-success">
+                        {{ equipamentos_ativos }}
+                    </h2>
+
+                </div>
+
+                <i class="bi bi-check-circle-fill text-success"
+                   style="font-size: 3rem;">
+                </i>
+
+            </div>
+
+            <div class="border-bottom border-4 border-success rounded-bottom">
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endif %}
+
+<h4 class="mb-3 fw-semibold">
+
+    {% if modo_usuario %}
+        Meus Chamados
+    {% else %}
+        Chamados
+    {% endif %}
+
+</h4>
+
+<div class="row mb-4">
+
+    <div class="col-md-4">
+
+        <div class="card shadow-sm border-0 h-100">
+
+            <div class="card-body d-flex justify-content-between align-items-center">
+
+                <div>
+
+                    <h6 class="text-muted mb-2">
+                        Chamados Abertos
+                    </h6>
+
+                    <h2 class="fw-bold text-danger">
+                        {{ chamados_abertos }}
+                    </h2>
+
+                </div>
+
+                <i class="bi bi-ticket-detailed-fill text-danger"
+                   style="font-size: 3rem;">
+                </i>
+
+            </div>
+
+            <div class="border-bottom border-4 border-danger rounded-bottom">
+            </div>
+
+        </div>
+
+    </div>
+
+    <div class="col-md-4">
+
+        <div class="card shadow-sm border-0 h-100">
+
+            <div class="card-body d-flex justify-content-between align-items-center">
+
+                <div>
+
+                    <h6 class="text-muted mb-2">
+                        Em Andamento
+                    </h6>
+
+                    <h2 class="fw-bold text-warning">
+                        {{ chamados_andamento }}
+                    </h2>
+
+                </div>
+
+                <i class="bi bi-hourglass-split text-warning"
+                   style="font-size: 3rem;">
+                </i>
+
+            </div>
+
+            <div class="border-bottom border-4 border-warning rounded-bottom">
+            </div>
+
+        </div>
+
+    </div>
+
+    <div class="col-md-4">
+
+        <div class="card shadow-sm border-0 h-100">
+
+            <div class="card-body d-flex justify-content-between align-items-center">
+
+                <div>
+
+                    <h6 class="text-muted mb-2">
+                        Finalizados
+                    </h6>
+
+                    <h2 class="fw-bold text-success">
+                        {{ chamados_finalizados }}
+                    </h2>
+
+                </div>
+
+                <i class="bi bi-check2-circle text-success"
+                   style="font-size: 3rem;">
+                </i>
+
+            </div>
+
+            <div class="border-bottom border-4 border-success rounded-bottom">
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+<div class="card shadow-sm border-0 mb-4">
+
+    <div class="card-header bg-white border-0 pt-4">
+
+        <h5 class="fw-semibold">
+            Últimos Chamados
+        </h5>
+
+    </div>
+
+    <div class="card-body">
+
+        <table class="table align-middle">
+
+            <thead>
+
+                <tr>
+                    <th>ID</th>
+                    <th>Título</th>
+                    <th>Status</th>
+                    <th>Prioridade</th>
+                </tr>
+
+            </thead>
+
+            <tbody>
+
+                {% for chamado in ultimos_chamados %}
+
+                <tr>
+
+                    <td>{{ chamado.id }}</td>
+
+                    <td>
+
+                        <a href="/chamados/{{ chamado.id }}"
+                           class="text-decoration-none fw-semibold">
+
+                            {{ chamado.titulo }}
+
+                        </a>
+
+                    </td>
+
+                    <td>
+
+                        {% if chamado.status == 'Aberto' %}
+
+                            <span class="badge bg-danger">
+                                {{ chamado.status }}
+                            </span>
+
+                        {% elif chamado.status == 'Em andamento' %}
+
+                            <span class="badge bg-warning text-dark">
+                                {{ chamado.status }}
+                            </span>
+
+                        {% else %}
+
+                            <span class="badge bg-success">
+                                {{ chamado.status }}
+                            </span>
+
+                        {% endif %}
+
+                    </td>
+
+                    <td>{{ chamado.prioridade }}</td>
+
+                </tr>
+
+                {% endfor %}
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+</div>
+
+{% if not modo_usuario %}
+
+<div class="card shadow-sm border-0 mb-4">
+
+    <div class="card-header bg-white border-0 pt-4">
+
+        <h5 class="fw-semibold">
+            Equipamentos Recentes
+        </h5>
+
+    </div>
+
+    <div class="card-body">
+
+        <table class="table align-middle">
+
+            <thead>
+
+                <tr>
+                    <th>ID</th>
+                    <th>Patrimônio</th>
+                    <th>Nome</th>
+                    <th>Tipo</th>
+                </tr>
+
+            </thead>
+
+            <tbody>
+
+                {% for equipamento in ultimos_equipamentos %}
+
+                <tr>
+
+                    <td>{{ equipamento.id }}</td>
+                    <td>{{ equipamento.patrimonio }}</td>
+                    <td>{{ equipamento.nome }}</td>
+                    <td>{{ equipamento.tipo }}</td>
+
+                </tr>
+
+                {% endfor %}
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+</div>
+
+<div class="card shadow-sm border-0">
+
+    <div class="card-header bg-danger text-white border-0 pt-4">
+
+        <h5 class="fw-semibold">
+            Manutenções Preventivas
+        </h5>
+
+    </div>
+
+    <div class="card-body">
+
+        {% if manutencoes_pendentes %}
+
+        <table class="table align-middle">
+
+            <thead>
+
+                <tr>
+                    <th>Equipamento</th>
+                    <th>Tipo</th>
+                    <th>Data</th>
+                </tr>
+
+            </thead>
+
+            <tbody>
+
+                {% for manutencao in manutencoes_pendentes %}
+
+                <tr>
+
+                    <td>
+                        {{ manutencao.equipamento.nome }}
+                    </td>
+
+                    <td>
+                        {{ manutencao.tipo }}
+                    </td>
+
+                    <td>
+
+                        <span class="badge bg-danger">
+
+                            {{ manutencao.proxima_manutencao.strftime('%d/%m/%Y') }}
+
+                        </span>
+
+                    </td>
+
+                </tr>
+
+                {% endfor %}
+
+            </tbody>
+
+        </table>
+
+        {% else %}
+
+        <p class="mb-0">
+            Nenhuma manutenção preventiva próxima.
+        </p>
+
+        {% endif %}
+
+    </div>
+
+</div>
+
+{% endif %}
+
+{% endblock %}

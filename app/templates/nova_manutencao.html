@@ -1,0 +1,152 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+
+    <div>
+
+        <a href="/equipamentos/{{ equipamento.id }}"
+           class="btn btn-light border mb-3">
+
+            <i class="bi bi-arrow-left"></i>
+            Voltar
+
+        </a>
+
+        <h2 class="fw-bold mb-1">
+            Nova Manutenção
+        </h2>
+
+        <p class="text-muted mb-0">
+            Registrar manutenção para o equipamento:
+            <strong>{{ equipamento.nome }}</strong>
+        </p>
+
+    </div>
+
+</div>
+
+<form method="POST">
+
+    <div class="row justify-content-center">
+
+        <div class="col-md-8">
+
+            <div class="card shadow-sm border-0 mb-4">
+
+                <div class="card-body">
+
+                    <h5 class="fw-semibold mb-4">
+
+                        <i class="bi bi-tools"></i>
+                        Dados da Manutenção
+
+                    </h5>
+
+                    <div class="row">
+
+                        <div class="col-md-6 mb-3">
+
+                            <label class="form-label">
+                                Tipo de Manutenção
+                            </label>
+
+                            <input type="text"
+                                   name="tipo"
+                                   class="form-control"
+                                   placeholder="Ex: Preventiva, Troca de peça..."
+                                   required>
+
+                        </div>
+
+                        <div class="col-md-6 mb-3">
+
+                            <label class="form-label">
+                                Status
+                            </label>
+
+                            <select name="status"
+                                    class="form-select">
+
+                                <option value="Pendente">
+                                    Pendente
+                                </option>
+
+                                <option value="Em andamento">
+                                    Em andamento
+                                </option>
+
+                                <option value="Concluída">
+                                    Concluída
+                                </option>
+
+                            </select>
+
+                        </div>
+
+                        <div class="col-12 mb-3">
+
+                            <label class="form-label">
+                                Descrição
+                            </label>
+
+                            <textarea name="descricao"
+                                      class="form-control"
+                                      rows="5"
+                                      placeholder="Descreva o serviço realizado..."
+                                      required></textarea>
+
+                        </div>
+
+                        <div class="col-md-6 mb-3">
+
+                            <label class="form-label">
+                                Próxima Manutenção
+                            </label>
+
+                            <input type="date"
+                                   name="proxima_manutencao"
+                                   class="form-control">
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+            <div class="card shadow-sm border-0">
+
+                <div class="card-body">
+
+                    <h5 class="fw-semibold mb-3">
+                        Ações
+                    </h5>
+
+                    <button class="btn btn-success w-100 mb-2">
+
+                        <i class="bi bi-check-circle"></i>
+                        Salvar Manutenção
+
+                    </button>
+
+                    <a href="/equipamentos/{{ equipamento.id }}"
+                       class="btn btn-light border w-100">
+
+                        Cancelar
+
+                    </a>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</form>
+
+{% endblock %}

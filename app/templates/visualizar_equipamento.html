@@ -1,0 +1,329 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+
+    <div>
+        <a href="/equipamentos" class="btn btn-light border mb-3">
+            <i class="bi bi-arrow-left"></i>
+            Voltar
+        </a>
+
+        <h2 class="fw-bold mb-1">
+            {{ equipamento.nome }}
+        </h2>
+
+        <p class="text-muted mb-0">
+            Patrimônio {{ equipamento.patrimonio }}
+        </p>
+    </div>
+
+    <div class="d-flex gap-2">
+
+        <a href="/equipamentos/{{ equipamento.id }}/editar"
+           class="btn btn-warning">
+
+            <i class="bi bi-pencil-square"></i>
+            Editar
+
+        </a>
+
+        <a href="/equipamentos/{{ equipamento.id }}/manutencao/nova"
+           class="btn btn-primary">
+
+            <i class="bi bi-tools"></i>
+            Registrar Manutenção
+
+        </a>
+
+    </div>
+
+</div>
+
+<div class="row">
+
+    <div class="col-md-8">
+
+        <div class="card shadow-sm border-0 mb-4">
+
+            <div class="card-body">
+
+                <h5 class="fw-semibold mb-4">
+                    <i class="bi bi-info-circle"></i>
+                    Informações do Equipamento
+                </h5>
+
+                <div class="row">
+
+                    <div class="col-md-6 mb-3">
+                        <small class="text-muted">Tipo</small>
+                        <div class="fw-semibold">{{ equipamento.tipo or 'Não informado' }}</div>
+                    </div>
+
+                    <div class="col-md-6 mb-3">
+                        <small class="text-muted">Status</small>
+                        <div>
+                            {% if equipamento.status == 'Ativo' %}
+                                <span class="badge bg-success">
+                                    <i class="bi bi-check-circle"></i>
+                                    Ativo
+                                </span>
+                            {% elif equipamento.status == 'Manutenção' %}
+                                <span class="badge bg-warning text-dark">
+                                    <i class="bi bi-tools"></i>
+                                    Manutenção
+                                </span>
+                            {% elif equipamento.status == 'Baixado' %}
+                                <span class="badge bg-secondary">
+                                    <i class="bi bi-archive"></i>
+                                    Baixado
+                                </span>
+                            {% else %}
+                                <span class="badge bg-primary">
+                                    {{ equipamento.status }}
+                                </span>
+                            {% endif %}
+                        </div>
+                    </div>
+
+                    <div class="col-md-6 mb-3">
+                        <small class="text-muted">Marca</small>
+                        <div class="fw-semibold">{{ equipamento.marca or 'Não informado' }}</div>
+                    </div>
+
+                    <div class="col-md-6 mb-3">
+                        <small class="text-muted">Modelo</small>
+                        <div class="fw-semibold">{{ equipamento.modelo or 'Não informado' }}</div>
+                    </div>
+
+                    <div class="col-md-6 mb-3">
+                        <small class="text-muted">Número de Série</small>
+                        <div class="fw-semibold">{{ equipamento.numero_serie or 'Não informado' }}</div>
+                    </div>
+
+                    <div class="col-md-6 mb-3">
+                        <small class="text-muted">IP</small>
+                        <div class="fw-semibold">{{ equipamento.ip or 'Não informado' }}</div>
+                    </div>
+
+                    <div class="col-md-6 mb-3">
+                        <small class="text-muted">Responsável</small>
+                        <div class="fw-semibold">{{ equipamento.usuario_responsavel or 'Não informado' }}</div>
+                    </div>
+
+                    <div class="col-md-6 mb-3">
+                        <small class="text-muted">Setor</small>
+                        <div class="fw-semibold">{{ equipamento.setor or 'Não informado' }}</div>
+                    </div>
+
+                    <div class="col-12">
+                        <small class="text-muted">Observações</small>
+
+                        <div class="border rounded p-3 bg-light mt-1">
+                            {{ equipamento.observacoes or 'Sem observações.' }}
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <div class="col-md-4">
+
+        <div class="card shadow-sm border-0 mb-4">
+
+            <div class="card-body text-center">
+
+                <h5 class="fw-semibold mb-3">
+                    <i class="bi bi-image"></i>
+                    Imagem
+                </h5>
+
+                {% if equipamento.imagem %}
+
+                    <img src="{{ url_for('static',
+                                         filename='uploads/' + equipamento.imagem) }}"
+                         class="img-fluid rounded border bg-white"
+                         style="max-height: 320px; object-fit: contain;">
+
+                {% else %}
+
+                    <div class="border rounded p-5 text-muted bg-light">
+                        <i class="bi bi-image" style="font-size: 3rem;"></i>
+                        <p class="mb-0 mt-2">Sem imagem</p>
+                    </div>
+
+                {% endif %}
+
+            </div>
+
+        </div>
+
+        <div class="card shadow-sm border-0">
+
+            <div class="card-body">
+
+                <h5 class="fw-semibold mb-3">
+                    Ações
+                </h5>
+
+                <a href="/equipamentos/{{ equipamento.id }}/editar"
+                   class="btn btn-warning w-100 mb-2">
+
+                    <i class="bi bi-pencil-square"></i>
+                    Editar Equipamento
+
+                </a>
+
+                <a href="/equipamentos/{{ equipamento.id }}/manutencao/nova"
+                   class="btn btn-primary w-100">
+
+                    <i class="bi bi-tools"></i>
+                    Registrar Manutenção
+
+                </a>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+<div class="card shadow-sm border-0 mt-4">
+
+    <div class="card-header bg-white border-0 pt-4">
+
+        <h5 class="fw-semibold">
+            <i class="bi bi-clock-history"></i>
+            Histórico de Manutenções
+        </h5>
+
+    </div>
+
+    <div class="card-body">
+
+        <div class="table-responsive">
+
+            <table class="table table-hover align-middle">
+
+                <thead class="table-light">
+
+                    <tr>
+                        <th>Tipo</th>
+                        <th>Descrição</th>
+                        <th>Data</th>
+                        <th>Próxima</th>
+                        <th>Status</th>
+                        <th class="text-end">Ações</th>
+                    </tr>
+
+                </thead>
+
+                <tbody>
+
+                    {% for manutencao in equipamento.manutencoes %}
+
+                    <tr>
+
+                        <td class="fw-semibold">
+                            {{ manutencao.tipo }}
+                        </td>
+
+                        <td>
+                            {{ manutencao.descricao }}
+                        </td>
+
+                        <td>
+                            {{ manutencao.data_manutencao.strftime('%d/%m/%Y') }}
+                        </td>
+
+                        <td>
+                            {{ manutencao.proxima_manutencao.strftime('%d/%m/%Y') }}
+                        </td>
+
+                        <td>
+
+                            {% if manutencao.status == 'Concluída' %}
+
+                                <span class="badge bg-success">
+                                    <i class="bi bi-check-circle"></i>
+                                    {{ manutencao.status }}
+                                </span>
+
+                            {% elif manutencao.status == 'Pendente' %}
+
+                                <span class="badge bg-warning text-dark">
+                                    <i class="bi bi-exclamation-circle"></i>
+                                    {{ manutencao.status }}
+                                </span>
+
+                            {% elif manutencao.status == 'Em andamento' %}
+
+                                <span class="badge bg-primary">
+                                    <i class="bi bi-clock"></i>
+                                    {{ manutencao.status }}
+                                </span>
+
+                            {% else %}
+
+                                <span class="badge bg-secondary">
+                                    {{ manutencao.status }}
+                                </span>
+
+                            {% endif %}
+
+                        </td>
+
+                        <td class="text-end">
+
+                            <div class="btn-group">
+
+                                <a href="/manutencao/{{ manutencao.id }}/editar"
+                                   class="btn btn-sm btn-outline-warning">
+
+                                    <i class="bi bi-pencil-square"></i>
+
+                                </a>
+
+                                <a href="/manutencao/{{ manutencao.id }}/excluir"
+                                   class="btn btn-sm btn-outline-danger"
+                                   onclick="return confirm('Deseja excluir esta manutenção?')">
+
+                                    <i class="bi bi-trash"></i>
+
+                                </a>
+
+                            </div>
+
+                        </td>
+
+                    </tr>
+
+                    {% else %}
+
+                    <tr>
+                        <td colspan="6" class="text-center text-muted py-4">
+                            Nenhuma manutenção registrada.
+                        </td>
+                    </tr>
+
+                    {% endfor %}
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}

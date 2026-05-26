@@ -1,0 +1,220 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+
+    <div>
+        <a href="/equipamentos" class="btn btn-light border mb-3">
+            <i class="bi bi-arrow-left"></i>
+            Voltar
+        </a>
+
+        <h2 class="fw-bold mb-1">Novo Equipamento</h2>
+        <p class="text-muted mb-0">Cadastre um novo item no inventário de TI.</p>
+    </div>
+
+</div>
+
+<form method="POST" enctype="multipart/form-data">
+
+    <div class="row">
+
+        <div class="col-md-8">
+
+            <div class="card shadow-sm border-0 mb-4">
+
+                <div class="card-body">
+
+                    <h5 class="fw-semibold mb-4">
+                        <i class="bi bi-info-circle"></i>
+                        Informações Principais
+                    </h5>
+
+                    <div class="row">
+
+                        <div class="col-md-4 mb-3">
+                            <label class="form-label">Patrimônio</label>
+                            <input type="text"
+                                   name="patrimonio"
+                                   class="form-control"
+                                   placeholder="Ex: 2095"
+                                   required>
+                        </div>
+
+                        <div class="col-md-8 mb-3">
+                            <label class="form-label">Nome</label>
+                            <input type="text"
+                                   name="nome"
+                                   class="form-control"
+                                   placeholder="Ex: Computador Recepção"
+                                   required>
+                        </div>
+
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">Tipo</label>
+                            <input type="text"
+                                   name="tipo"
+                                   class="form-control"
+                                   placeholder="Ex: Computador, Impressora, Nobreak">
+                        </div>
+
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">Status</label>
+                            <select name="status" class="form-select">
+                                <option value="Ativo">Ativo</option>
+                                <option value="Manutenção">Manutenção</option>
+                                <option value="Baixado">Baixado</option>
+                            </select>
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+            <div class="card shadow-sm border-0 mb-4">
+
+                <div class="card-body">
+
+                    <h5 class="fw-semibold mb-4">
+                        <i class="bi bi-cpu"></i>
+                        Dados Técnicos
+                    </h5>
+
+                    <div class="row">
+
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">Marca</label>
+                            <input type="text"
+                                   name="marca"
+                                   class="form-control"
+                                   placeholder="Ex: Dell">
+                        </div>
+
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">Modelo</label>
+                            <input type="text"
+                                   name="modelo"
+                                   class="form-control"
+                                   placeholder="Ex: Optiplex 3080">
+                        </div>
+
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">Número de Série</label>
+                            <input type="text"
+                                   name="numero_serie"
+                                   class="form-control"
+                                   placeholder="Ex: SN123456">
+                        </div>
+
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">IP</label>
+                            <input type="text"
+                                   name="ip"
+                                   class="form-control"
+                                   placeholder="Ex: 192.168.0.10">
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+            <div class="card shadow-sm border-0 mb-4">
+
+                <div class="card-body">
+
+                    <h5 class="fw-semibold mb-4">
+                        <i class="bi bi-person-badge"></i>
+                        Responsabilidade
+                    </h5>
+
+                    <div class="row">
+
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">Usuário Responsável</label>
+                            <input type="text"
+                                   name="usuario_responsavel"
+                                   class="form-control"
+                                   placeholder="Ex: João da Silva">
+                        </div>
+
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">Setor</label>
+                            <input type="text"
+                                   name="setor"
+                                   class="form-control"
+                                   placeholder="Ex: Contabilidade">
+                        </div>
+
+                        <div class="col-12 mb-3">
+                            <label class="form-label">Observações</label>
+                            <textarea name="observacoes"
+                                      class="form-control"
+                                      rows="4"
+                                      placeholder="Informações adicionais sobre o equipamento..."></textarea>
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="col-md-4">
+
+            <div class="card shadow-sm border-0 mb-4">
+
+                <div class="card-body">
+
+                    <h5 class="fw-semibold mb-4">
+                        <i class="bi bi-image"></i>
+                        Imagem do Equipamento
+                    </h5>
+
+                    <input type="file"
+                           name="imagem"
+                           class="form-control">
+
+                    <small class="text-muted d-block mt-2">
+                        Envie uma foto do equipamento ou da etiqueta de patrimônio.
+                    </small>
+
+                </div>
+
+            </div>
+
+            <div class="card shadow-sm border-0">
+
+                <div class="card-body">
+
+                    <h5 class="fw-semibold mb-3">
+                        Ações
+                    </h5>
+
+                    <button class="btn btn-success w-100 mb-2">
+                        <i class="bi bi-check-circle"></i>
+                        Salvar Equipamento
+                    </button>
+
+                    <a href="/equipamentos"
+                       class="btn btn-light border w-100">
+                        Cancelar
+                    </a>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</form>
+
+{% endblock %}
